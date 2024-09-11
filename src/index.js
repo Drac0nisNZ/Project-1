@@ -74,5 +74,10 @@ bookmarks.forEach((bookmark) => {
     link.setAttribute("href", `${url}`)  // sets bookmark as a link
     link.setAttribute("target", "_blank") // opens the link in a new tab
     link.textContent = name // uses the supplied namee as raw text
+
+    linkInfo.append(favicon, link) // links various things to the bookmark item
+    item.append(closeIcon, linkInfo)
+    bookmarksContainer.appendChild(item)
+
 })
 }
