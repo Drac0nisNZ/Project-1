@@ -36,10 +36,43 @@ function validate(nameValue, urlValue) {
         alert("Please submit values for both fields.")
         return false
     }
+
     if(!urlValue.match(regex)){
         alert("Please provide a valid web address.")
         return false
     }
     // Valid
     return true
+}
+
+function buildBookMarkDOM() {
+    bookmarksContainer.textContent= ""
+
+
+bookmarks.forEach((bookmark) => {
+    const {name, url} = bookmark
+    //console.log(name, url)
+
+    const item = document.createElement("div") // creates the container for the bookmark
+    item.classList.add("item")
+
+    const closeIcon = document.createElement("i") //creates the close button for the bookmark
+    closeIcon.classList.add("fas", "fa-times")
+    closeIcon.setAttribute("title", "Delete Bookmark")
+    closeIcon.setAttribute("onclick", `deleteBookmark('${url}')`)
+
+    const linkInfo = document.createElement("div")
+    linkInfo.classList.add("name")
+
+    const favicon = document.createElement("img")
+    favicon.setAttribute(
+        "src", url
+    )
+    favicon.setAttribute("alt", "Favicon")
+
+    const link = document.createElement('a')
+    link.setAttribute("href", `${url}`)  // sets bookmark as a link
+    link.setAttribute("target", "_blank") // opens the link in a new tab
+    link.textContent = name // uses the supplied namee as raw text
+})
 }
