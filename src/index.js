@@ -56,28 +56,49 @@ bookmarks.forEach((bookmark) => {
     const item = document.createElement("div") // creates the container for the bookmark
     item.classList.add("item")
 
+    // Close icon
     const closeIcon = document.createElement("i") //creates the close button for the bookmark
     closeIcon.classList.add("fas", "fa-times")
     closeIcon.setAttribute("title", "Delete Bookmark")
     closeIcon.setAttribute("onclick", `deleteBookmark('${url}')`)
 
+    //Favicon / Link container
     const linkInfo = document.createElement("div")
     linkInfo.classList.add("name")
 
+    // Favicon
     const favicon = document.createElement("img")
     favicon.setAttribute(
         "src", url
     )
     favicon.setAttribute("alt", "Favicon")
 
+    // Link
     const link = document.createElement('a')
     link.setAttribute("href", `${url}`)  // sets bookmark as a link
     link.setAttribute("target", "_blank") // opens the link in a new tab
     link.textContent = name // uses the supplied namee as raw text
 
+    // Append to bookmarks container
     linkInfo.append(favicon, link) // links various things to the bookmark item
     item.append(closeIcon, linkInfo)
     bookmarksContainer.appendChild(item)
 
 })
+}
+
+// Fetch Bookmarks
+function fetchBookmarks() {
+    // json parse to take a string and convert it to an object
+    // Get a bookmark from a local storage if available
+    if(localStorage.getItem("bookmarks")) {
+        bookmarks = JSON.parse(localStorage.getItem("bookmarks"))
+    } else {
+        // create bookmarks array in locak storage(create a sample bookmark)
+        bookmarks = [
+            {name: "Google", url: "https//www.google.com"}
+        ]
+        localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+    }
+    buildBookMarkDOM()
 }
