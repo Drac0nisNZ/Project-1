@@ -9,7 +9,7 @@ const bookmarksContainer = document.getElementById('bookmarks-container') //decl
 let bookmarks = [] // empty array holding the data from the bookmarks
 
 function showModal() {
-    modal.classList.add("showModal")
+    modal.classList.add("modalShow")
     websiteNameEl.focus() // shows the tag as a website link
 }
 
@@ -41,6 +41,7 @@ function validate(nameValue, urlValue) {
         alert("Please provide a valid web address.")
         return false
     }
+    
     // Valid
     return true
 }
@@ -102,3 +103,53 @@ function fetchBookmarks() {
     }
     buildBookMarkDOM()
 }
+
+// Delete Bookmark
+function deleteBookmark(url) {
+    // Pass the url, loop through the bookmarks array and if matched then delete bookmark.close-icon
+    bookmarks.forEach((bookmark, i) => {
+        if (bookmark.url === url) {
+            bookmark.splice(i, 1) //delete bookmark from the array at index i and remove 1 item.close.icon
+        }
+    })
+    // Update bookmarks array in localStorage, re-populate the DOM.close-icon
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
+    fetchBookmarks()
+}
+
+// Handle Data from form input
+function storeBookmark(e) {
+    e.preventDefault()
+
+const nameValue = websiteNameEl.value
+let urlValue = websiteUrlEl.value
+
+if (!urlValue.includes("http://", "https://")) {
+    urlValue = `https://${urlValue}`
+}
+
+console.log(nameValue, urlValue)
+
+if (!validate(nameValue, urlValue)) {
+    return false
+}
+
+const bookmark = {
+    name: nameValue,
+    url: urlValue
+}
+
+bookmarks.push(bookmark)
+localStorage.setItem("bookmarks", JSON.stringify(bookmarks)) // It's needed to be stringified before we send it to our backend server
+
+fetchBookmarks()
+bookmarkForm.reset()
+websiteNameEl.focus()
+
+}
+
+// Event Listener for bookmark form
+bookmarkForm.addEventListener("submit", storeBookmark)
+
+// On load fetch bookmarks
+fetchBookmarks()
