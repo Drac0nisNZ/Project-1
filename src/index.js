@@ -6,17 +6,21 @@ const websiteNameEl = document.getElementById('website-name') //declaring variab
 const websiteUrlEl = document.getElementById('website-url') //declaring variable and linking to the website-url class from the html
 const bookmarksContainer = document.getElementById('bookmarks-container') //declaring variable and linking to the bookmarks-container class from the html
 
+
 let bookmarks = [] // empty array holding the data from the bookmarks
 
+
 function showModal() {
-    modal.classList.add("modalShow")
+    modal.classList.add("show-modal")
     websiteNameEl.focus() // shows the tag as a website link
 }
 
+
 modalShow.addEventListener("click", showModal) // shows or hides the modal card based on it's current state
 modalClose.addEventListener("click", () => {
-    modal.classList.remove("show-modal")
-})
+    modal.classList.remove("show-modal");
+});
+
 
 window.addEventListener("click", (e) => { // closes the modal if the window is clicked on
     e.target === modal ? modal.classList.remove("show-modal") : false
@@ -47,6 +51,7 @@ function validate(nameValue, urlValue) {
 }
 
 function buildBookMarkDOM() {
+
     bookmarksContainer.textContent= ""
 
 
@@ -54,6 +59,7 @@ bookmarks.forEach((bookmark) => {
     const {name, url} = bookmark
     //console.log(name, url)
 
+    
     const item = document.createElement("div") // creates the container for the bookmark
     item.classList.add("item")
 
@@ -70,7 +76,8 @@ bookmarks.forEach((bookmark) => {
     // Favicon
     const favicon = document.createElement("img")
     favicon.setAttribute(
-        "src", url
+        "src", 
+        ` https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://optimai.io&size=16`
     )
     favicon.setAttribute("alt", "Favicon")
 
@@ -84,8 +91,7 @@ bookmarks.forEach((bookmark) => {
     linkInfo.append(favicon, link) // links various things to the bookmark item
     item.append(closeIcon, linkInfo)
     bookmarksContainer.appendChild(item)
-
-})
+  })
 }
 
 // Fetch Bookmarks
@@ -101,6 +107,7 @@ function fetchBookmarks() {
         ]
         localStorage.setItem("bookmarks", JSON.stringify(bookmarks))
     }
+
     buildBookMarkDOM()
 }
 
@@ -119,7 +126,9 @@ function deleteBookmark(url) {
 
 // Handle Data from form input
 function storeBookmark(e) {
+
     e.preventDefault()
+
 
 const nameValue = websiteNameEl.value
 let urlValue = websiteUrlEl.value
@@ -129,7 +138,6 @@ if (!urlValue.includes("http://", "https://")) {
 }
 
 console.log(nameValue, urlValue)
-
 if (!validate(nameValue, urlValue)) {
     return false
 }
@@ -138,14 +146,12 @@ const bookmark = {
     name: nameValue,
     url: urlValue
 }
-
 bookmarks.push(bookmark)
-localStorage.setItem("bookmarks", JSON.stringify(bookmarks)) // It's needed to be stringified before we send it to our backend server
 
+localStorage.setItem("bookmarks", JSON.stringify(bookmarks)) // It's needed to be stringified before we send it to our backend server
 fetchBookmarks()
 bookmarkForm.reset()
 websiteNameEl.focus()
-
 }
 
 // Event Listener for bookmark form
